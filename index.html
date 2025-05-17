@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Explorer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="hud">
+            <div class="score-container">Score: <span id="score">0</span></div>
+            <div class="health-container">
+                <div class="health-bar">
+                    <div id="health-fill"></div>
+                </div>
+                <span>Health</span>
+            </div>
+            <div class="fuel-container">
+                <div class="fuel-bar">
+                    <div id="fuel-fill"></div>
+                </div>
+                <span>Fuel</span>
+            </div>
+            <div class="level-container">Level: <span id="level">1</span></div>
+        </div>
+        
+        <div id="game-area">
+            <div id="player"></div>
+            <!-- Game elements will be dynamically added here -->
+        </div>
+        
+        <div id="game-messages"></div>
+        
+        <div class="game-controls">
+            <button id="start-btn">Start Game</button>
+            <div class="mobile-controls">
+                <button id="up-btn">↑</button>
+                <div class="horizontal-controls">
+                    <button id="left-btn">←</button>
+                    <button id="right-btn">→</button>
+                </div>
+                <button id="down-btn">↓</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="game-over" class="modal">
+        <div class="modal-content">
+            <h2>Game Over</h2>
+            <p>Your final score: <span id="final-score">0</span></p>
+            <button id="restart-btn">Play Again</button>
+        </div>
+    </div>
+    
+    <div id="level-up" class="modal">
+        <div class="modal-content">
+            <h2>Level Up!</h2>
+            <p>You've reached level <span id="new-level">2</span></p>
+            <p>Choose an upgrade:</p>
+            <div class="upgrade-options">
+                <button class="upgrade-btn" data-upgrade="speed">Speed Boost</button>
+                <button class="upgrade-btn" data-upgrade="health">Extra Health</button>
+                <button class="upgrade-btn" data-upgrade="fuel">Fuel Efficiency</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

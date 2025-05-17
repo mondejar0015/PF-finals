@@ -1,0 +1,329 @@
+/* Base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #0a0a1a;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.game-container {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    background-color: #111;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 200, 255, 0.5);
+    overflow: hidden;
+}
+
+/* HUD styles */
+.hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-bottom: 2px solid #00ccff;
+    height: 50px;
+}
+
+.score-container {
+    font-size: 20px;
+    color: #ffcc00;
+    font-weight: bold;
+}
+
+.health-container, .fuel-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px;
+}
+
+.health-bar, .fuel-bar {
+    width: 100%;
+    height: 15px;
+    background-color: #333;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 2px;
+}
+
+#health-fill {
+    height: 100%;
+    width: 100%;
+    background-color: #f55;
+    transition: width 0.3s;
+}
+
+#fuel-fill {
+    height: 100%;
+    width: 100%;
+    background-color: #5af;
+    transition: width 0.3s;
+}
+
+.level-container {
+    font-size: 18px;
+    color: #cc88ff;
+    font-weight: bold;
+}
+
+/* Game area */
+#game-area {
+    position: relative;
+    width: 100%;
+    height: 450px;
+    background-color: transparent;
+    background-image: 
+        radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 50px 50px, 30px 30px;
+    overflow: hidden;
+}
+
+/* Player spaceship */
+#player {
+    position: absolute;
+    width: 40px;
+    height: 50px;
+    background-image: linear-gradient(to bottom, #5af, #27f);
+    clip-path: polygon(50% 0%, 100% 100%, 50% 80%, 0% 100%);
+    transition: transform 0.1s;
+    z-index: 10;
+}
+
+#player::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 35%;
+    width: 30%;
+    height: 15px;
+    background: linear-gradient(to bottom, rgba(255, 165, 0, 0.9), rgba(255, 69, 0, 0.3));
+    border-radius: 50% 50% 0 0;
+    animation: flame 0.2s infinite alternate;
+}
+
+@keyframes flame {
+    from { height: 15px; opacity: 0.8; }
+    to { height: 25px; opacity: 0.5; }
+}
+
+/* Game elements */
+.star {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    animation: twinkle 1.5s infinite alternate;
+}
+
+@keyframes twinkle {
+    from { opacity: 0.3; }
+    to { opacity: 1; }
+}
+
+.asteroid {
+    position: absolute;
+    background-color: #a86;
+    border-radius: 50%;
+    box-shadow: inset -2px -2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.fuel-pickup {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: #5af;
+    border-radius: 5px;
+    border: 2px solid #fff;
+    animation: pulse 1s infinite alternate;
+}
+
+.health-pickup {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background-color: #f55;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    animation: pulse 1s infinite alternate;
+}
+
+.point-pickup {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #fd0;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    animation: rotate 3s linear infinite;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Game messages */
+#game-messages {
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translateX(-50%);
+    color: #ff8;
+    font-size: 24px;
+    text-shadow: 0 0 5px rgba(255, 255, 0, 0.7);
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    text-align: center;
+    z-index: 100;
+}
+
+/* Game controls */
+.game-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-top: 2px solid #00ccff;
+    height: 100px;
+}
+
+#start-btn, #restart-btn, .upgrade-btn {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #008cff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#start-btn:hover, #restart-btn:hover, .upgrade-btn:hover {
+    background-color: #00a8ff;
+}
+
+.mobile-controls {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.horizontal-controls {
+    display: flex;
+    gap: 20px;
+}
+
+.mobile-controls button {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    background-color: rgba(0, 140, 255, 0.5);
+    color: white;
+    border: 1px solid #00ccff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #113;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #00ccff;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.modal h2 {
+    color: #ff8;
+    margin-bottom: 20px;
+}
+
+.upgrade-options {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.upgrade-btn {
+    flex: 1;
+    margin: 0 5px;
+    font-size: 14px;
+}
+
+/* Effects */
+.explosion {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle, #ff5, #f50);
+    border-radius: 50%;
+    opacity: 1;
+    animation: explode 0.5s forwards;
+}
+
+@keyframes explode {
+    0% { transform: scale(0.5); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+/* Responsive Design */
+@media (max-width: 800px) {
+    .game-container {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+    }
+    
+    #game-area {
+        height: calc(100vh - 150px);
+    }
+    
+    .mobile-controls {
+        display: flex;
+    }
+}
+
+@media (max-width: 600px) {
+    .hud {
+        flex-wrap: wrap;
+        height: auto;
+    }
+    
+    .health-container, .fuel-container {
+        width: 100px;
+    }
+}

@@ -1,329 +1,529 @@
-/* Base styles */
+/* Space Game - Improved CSS
+ * 
+ * Improvements:
+ * - Organized with CSS custom properties (variables) for easier theming
+ * - Added CSS animations with better performance
+ * - Improved responsiveness
+ * - Enhanced visual effects
+ * - Cleaner organization with comments
+ */
+
+/* ===== CSS Variables for easy theming ===== */
+:root {
+  /* Colors */
+  --color-bg-primary: #0a0a1a;
+  --color-bg-secondary: #111;
+  --color-text-primary: #fff;
+  --color-accent-primary: #00ccff;
+  --color-accent-secondary: #008cff;
+  --color-accent-tertiary: #5af;
+  --color-score: #ffcc00;
+  --color-level: #cc88ff;
+  --color-health: #f55;
+  --color-fuel: #5af;
+  --color-asteroid: #a86;
+  --color-star: #fff;
+  --color-message: #ff8;
+  --color-point-pickup: #fd0;
+  
+  /* Sizes */
+  --container-width: 800px;
+  --container-height: 600px;
+  --hud-height: 50px;
+  --controls-height: 100px;
+  --game-area-height: calc(var(--container-height) - var(--hud-height) - var(--controls-height));
+  
+  /* Borders & Shadows */
+  --border-radius-main: 10px;
+  --border-radius-small: 5px;
+  --glow-effect: 0 0 20px rgba(0, 200, 255, 0.5);
+}
+
+/* ===== Base Styles ===== */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
 }
 
 body {
-    background-color: #0a0a1a;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    overflow: hidden;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
 }
 
 .game-container {
-    position: relative;
-    width: 800px;
-    height: 600px;
-    background-color: #111;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 200, 255, 0.5);
-    overflow: hidden;
+  position: relative;
+  width: var(--container-width);
+  height: var(--container-height);
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--border-radius-main);
+  box-shadow: var(--glow-effect);
+  overflow: hidden;
 }
 
-/* HUD styles */
+/* ===== HUD Styles ===== */
 .hud {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: rgba(0, 0, 0, 0.7);
-    border-bottom: 2px solid #00ccff;
-    height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-bottom: 2px solid var(--color-accent-primary);
+  height: var(--hud-height);
 }
 
 .score-container {
-    font-size: 20px;
-    color: #ffcc00;
-    font-weight: bold;
+  font-size: 20px;
+  color: var(--color-score);
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(255, 204, 0, 0.3);
 }
 
-.health-container, .fuel-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 150px;
+.health-container, 
+.fuel-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 150px;
 }
 
-.health-bar, .fuel-bar {
-    width: 100%;
-    height: 15px;
-    background-color: #333;
-    border-radius: 5px;
-    overflow: hidden;
-    margin-bottom: 2px;
+.health-bar, 
+.fuel-bar {
+  width: 100%;
+  height: 15px;
+  background-color: #333;
+  border-radius: var(--border-radius-small);
+  overflow: hidden;
+  margin-bottom: 2px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 #health-fill {
-    height: 100%;
-    width: 100%;
-    background-color: #f55;
-    transition: width 0.3s;
+  height: 100%;
+  width: 100%;
+  background-color: var(--color-health);
+  transition: width 0.3s ease-out;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
 }
 
 #fuel-fill {
-    height: 100%;
-    width: 100%;
-    background-color: #5af;
-    transition: width 0.3s;
+  height: 100%;
+  width: 100%;
+  background-color: var(--color-fuel);
+  transition: width 0.3s ease-out;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
 }
 
 .level-container {
-    font-size: 18px;
-    color: #cc88ff;
-    font-weight: bold;
+  font-size: 18px;
+  color: var(--color-level);
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(204, 136, 255, 0.3);
 }
 
-/* Game area */
+/* ===== Game Area ===== */
 #game-area {
-    position: relative;
-    width: 100%;
-    height: 450px;
-    background-color: transparent;
-    background-image: 
-        radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-        radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-    background-size: 50px 50px, 30px 30px;
-    overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: var(--game-area-height);
+  background-color: transparent;
+  background-image: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px, 30px 30px;
+  overflow: hidden;
+  /* Use will-change for better rendering performance */
+  will-change: transform;
 }
 
-/* Player spaceship */
+/* ===== Player Spaceship ===== */
 #player {
-    position: absolute;
-    width: 40px;
-    height: 50px;
-    background-image: linear-gradient(to bottom, #5af, #27f);
-    clip-path: polygon(50% 0%, 100% 100%, 50% 80%, 0% 100%);
-    transition: transform 0.1s;
-    z-index: 10;
+  position: absolute;
+  width: 40px;
+  height: 50px;
+  background-image: linear-gradient(to bottom, var(--color-accent-tertiary), #27f);
+  clip-path: polygon(50% 0%, 100% 100%, 50% 80%, 0% 100%);
+  transition: transform 0.1s ease-out;
+  z-index: 10;
+  will-change: transform;
+  filter: drop-shadow(0 0 5px rgba(0, 200, 255, 0.7));
 }
 
 #player::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 35%;
-    width: 30%;
-    height: 15px;
-    background: linear-gradient(to bottom, rgba(255, 165, 0, 0.9), rgba(255, 69, 0, 0.3));
-    border-radius: 50% 50% 0 0;
-    animation: flame 0.2s infinite alternate;
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 35%;
+  width: 30%;
+  height: 15px;
+  background: linear-gradient(to bottom, rgba(255, 165, 0, 0.9), rgba(255, 69, 0, 0.3));
+  border-radius: 50% 50% 0 0;
+  animation: flame 0.2s infinite alternate;
+  will-change: height, opacity;
 }
 
 @keyframes flame {
-    from { height: 15px; opacity: 0.8; }
-    to { height: 25px; opacity: 0.5; }
+  from { height: 15px; opacity: 0.8; }
+  to { height: 25px; opacity: 0.5; }
 }
 
-/* Game elements */
+/* ===== Game Elements ===== */
 .star {
-    position: absolute;
-    background-color: white;
-    border-radius: 50%;
-    animation: twinkle 1.5s infinite alternate;
+  position: absolute;
+  background-color: var(--color-star);
+  border-radius: 50%;
+  animation: twinkle 1.5s infinite alternate;
+  will-change: opacity;
 }
 
 @keyframes twinkle {
-    from { opacity: 0.3; }
-    to { opacity: 1; }
+  from { opacity: 0.3; }
+  to { opacity: 1; }
 }
 
 .asteroid {
-    position: absolute;
-    background-color: #a86;
-    border-radius: 50%;
-    box-shadow: inset -2px -2px 5px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  background-color: var(--color-asteroid);
+  border-radius: 50%;
+  box-shadow: inset -2px -2px 5px rgba(0, 0, 0, 0.5);
+  will-change: transform;
+}
+
+/* Add crater details to asteroids */
+.asteroid::before {
+  content: '';
+  position: absolute;
+  width: 30%;
+  height: 30%;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  top: 20%;
+  left: 20%;
+}
+
+.asteroid::after {
+  content: '';
+  position: absolute;
+  width: 20%;
+  height: 20%;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  bottom: 15%;
+  right: 25%;
 }
 
 .fuel-pickup {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background-color: #5af;
-    border-radius: 5px;
-    border: 2px solid #fff;
-    animation: pulse 1s infinite alternate;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: var(--color-fuel);
+  border-radius: var(--border-radius-small);
+  border: 2px solid var(--color-text-primary);
+  animation: pulse 1s infinite alternate;
+  will-change: transform;
+  box-shadow: 0 0 10px rgba(85, 170, 255, 0.7);
 }
 
 .health-pickup {
-    position: absolute;
-    width: 25px;
-    height: 25px;
-    background-color: #f55;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    animation: pulse 1s infinite alternate;
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background-color: var(--color-health);
+  border-radius: 50%;
+  border: 2px solid var(--color-text-primary);
+  animation: pulse 1s infinite alternate;
+  will-change: transform;
+  box-shadow: 0 0 10px rgba(255, 85, 85, 0.7);
 }
 
 .point-pickup {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-color: #fd0;
-    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-    animation: rotate 3s linear infinite;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-point-pickup);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  animation: rotate 3s linear infinite;
+  will-change: transform;
+  filter: drop-shadow(0 0 5px rgba(255, 221, 0, 0.7));
 }
 
 @keyframes pulse {
-    from { transform: scale(1); }
-    to { transform: scale(1.1); }
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
 }
 
 @keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-/* Game messages */
+/* ===== Game Messages ===== */
 #game-messages {
-    position: absolute;
-    left: 50%;
-    top: 60%;
-    transform: translateX(-50%);
-    color: #ff8;
-    font-size: 24px;
-    text-shadow: 0 0 5px rgba(255, 255, 0, 0.7);
-    opacity: 0;
-    transition: opacity 0.3s, transform 0.3s;
-    text-align: center;
-    z-index: 100;
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  transform: translateX(-50%);
+  color: var(--color-message);
+  font-size: 24px;
+  text-shadow: 0 0 5px rgba(255, 255, 0, 0.7);
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  text-align: center;
+  z-index: 100;
+  pointer-events: none; /* Make sure messages don't interfere with clicks */
 }
 
-/* Game controls */
+/* ===== Game Controls ===== */
 .game-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.7);
-    border-top: 2px solid #00ccff;
-    height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-top: 2px solid var(--color-accent-primary);
+  height: var(--controls-height);
 }
 
-#start-btn, #restart-btn, .upgrade-btn {
-    padding: 10px 20px;
-    font-size: 18px;
-    background-color: #008cff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+#start-btn, 
+#restart-btn, 
+.upgrade-btn {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: var(--color-accent-secondary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-small);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-#start-btn:hover, #restart-btn:hover, .upgrade-btn:hover {
-    background-color: #00a8ff;
+#start-btn:hover, 
+#restart-btn:hover, 
+.upgrade-btn:hover {
+  background-color: var(--color-accent-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#start-btn:active, 
+#restart-btn:active, 
+.upgrade-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .mobile-controls {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    margin-left: 20px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 20px;
 }
 
 .horizontal-controls {
-    display: flex;
-    gap: 20px;
+  display: flex;
+  gap: 20px;
 }
 
 .mobile-controls button {
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-    background-color: rgba(0, 140, 255, 0.5);
-    color: white;
-    border: 1px solid #00ccff;
-    border-radius: 5px;
-    cursor: pointer;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  background-color: rgba(0, 140, 255, 0.5);
+  color: white;
+  border: 1px solid var(--color-accent-primary);
+  border-radius: var(--border-radius-small);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Modal styles */
+.mobile-controls button:active {
+  background-color: rgba(0, 140, 255, 0.8);
+  transform: scale(0.95);
+}
+
+/* ===== Modal Styles ===== */
 .modal {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    z-index: 100;
-    justify-content: center;
-    align-items: center;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 100;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(3px);
+  transition: all 0.3s ease;
 }
 
 .modal-content {
-    background-color: #113;
-    padding: 20px;
-    border-radius: 10px;
-    border: 2px solid #00ccff;
-    width: 80%;
-    max-width: 400px;
-    text-align: center;
+  background-color: #113;
+  padding: 20px;
+  border-radius: var(--border-radius-main);
+  border: 2px solid var(--color-accent-primary);
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.modal.active .modal-content {
+  transform: scale(1);
 }
 
 .modal h2 {
-    color: #ff8;
-    margin-bottom: 20px;
+  color: var(--color-message);
+  margin-bottom: 20px;
+  text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
 }
 
 .upgrade-options {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .upgrade-btn {
-    flex: 1;
-    margin: 0 5px;
-    font-size: 14px;
+  flex: 1;
+  min-width: 100px;
+  margin: 0 5px;
+  font-size: 14px;
 }
 
-/* Effects */
+/* ===== Effects ===== */
 .explosion {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background: radial-gradient(circle, #ff5, #f50);
-    border-radius: 50%;
-    opacity: 1;
-    animation: explode 0.5s forwards;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: radial-gradient(circle, #ff5, #f50);
+  border-radius: 50%;
+  opacity: 1;
+  animation: explode 0.5s forwards;
+  will-change: transform, opacity;
+  pointer-events: none;
 }
 
 @keyframes explode {
-    0% { transform: scale(0.5); opacity: 1; }
-    100% { transform: scale(2); opacity: 0; }
+  0% { transform: scale(0.5); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.8; }
+  100% { transform: scale(2); opacity: 0; }
 }
 
-/* Responsive Design */
+/* Add hit animation for player */
+@keyframes hit {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.hit {
+  animation: hit 0.3s forwards;
+}
+
+/* Add point score animation */
+.point-text {
+  position: absolute;
+  color: var(--color-point-pickup);
+  font-weight: bold;
+  pointer-events: none;
+  z-index: 50;
+  animation: float-up 1s forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes float-up {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-30px); opacity: 0; }
+}
+
+/* ===== Responsive Design ===== */
 @media (max-width: 800px) {
-    .game-container {
-        width: 100%;
-        height: 100vh;
-        border-radius: 0;
-    }
-    
-    #game-area {
-        height: calc(100vh - 150px);
-    }
-    
-    .mobile-controls {
-        display: flex;
-    }
+  :root {
+    --container-width: 100%;
+    --container-height: 100vh;
+  }
+  
+  .game-container {
+    border-radius: 0;
+  }
+  
+  #game-area {
+    height: calc(100vh - var(--hud-height) - var(--controls-height));
+  }
+  
+  .mobile-controls {
+    display: flex;
+  }
 }
 
 @media (max-width: 600px) {
-    .hud {
-        flex-wrap: wrap;
-        height: auto;
-    }
-    
-    .health-container, .fuel-container {
-        width: 100px;
-    }
+  .hud {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 5px 10px;
+  }
+  
+  .health-container, 
+  .fuel-container {
+    width: 100px;
+  }
+  
+  .score-container,
+  .level-container {
+    font-size: 16px;
+  }
+  
+  .upgrade-options {
+    flex-direction: column;
+  }
+  
+  .upgrade-btn {
+    margin: 5px 0;
+  }
+}
+
+/* ===== Animations for Game State ===== */
+@keyframes game-over-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+
+.game-over-shake {
+  animation: game-over-shake 0.5s forwards;
+}
+
+@keyframes level-up-flash {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.5); }
+}
+
+.level-up-flash {
+  animation: level-up-flash 0.5s forwards;
+}
+
+/* ===== Screen Transitions ===== */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fade-in 0.5s forwards;
 }
